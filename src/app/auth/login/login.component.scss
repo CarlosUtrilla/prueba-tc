@@ -1,0 +1,52 @@
+.form-login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+    .logo{
+        margin-bottom: 30px;
+        img{
+            width: 250px;
+        }
+    }
+    .title{
+        text-align: center;
+        h2{
+            margin: 0;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        span{
+            color: #666;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+    }
+    form{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        button{
+            margin-top: 20px;
+            max-width: 100%;
+        }
+    }
+    .float-label{
+        display: flex;
+        flex-direction: column;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        label, small{
+            margin: 10px;
+            margin-bottom: 5px;
+            margin-top: 0px;
+        }
+        input{
+            width: 300px;
+            max-width: 300px;
+        }
+    }
+}
