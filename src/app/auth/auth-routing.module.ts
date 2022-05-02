@@ -4,17 +4,17 @@ import { MainComponent } from './main/main.component';
 
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     component: MainComponent,
   },
   {
-    path: "**",
-    redirectTo: "",
-  }
+    path: '**',
+    redirectTo: '',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AuthRoutingModule { }
+export class AuthRoutingModule {}

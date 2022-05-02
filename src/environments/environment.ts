@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: "https://mibanco-333616-default-rtdb.firebaseio.com"
+  api: 'https://mibanco-333616-default-rtdb.firebaseio.com',
 };
 
 /*

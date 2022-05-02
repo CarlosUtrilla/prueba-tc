@@ -4,23 +4,24 @@ import { ValidateUserGuard } from './guards/validate-user.guard';
 
 const routes: Routes = [
   {
-    path: "login",
-    loadChildren: ()=>import("./auth/auth.module").then(m=>m.AuthModule)
+    path: 'login',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
   },
   {
-    path: "dashboard",
-    loadChildren: () => import("./dashboard/dashboard.module").then(m => m.DashboardModule),
+    path: 'dashboard',
+    loadChildren: () =>
+      import('./dashboard/dashboard.module').then(m => m.DashboardModule),
     canActivate: [ValidateUserGuard],
-    canLoad: [ValidateUserGuard]
+    canLoad: [ValidateUserGuard],
   },
   {
-    path: "**",
-    redirectTo: "login",
-  }
+    path: '**',
+    redirectTo: 'login',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

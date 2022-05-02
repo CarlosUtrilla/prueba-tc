@@ -1,0 +1,29 @@
+<form class="flex flex-column align-items-start" [formGroup]="newAccount">
+  <span class="float-label">
+      <label for="name">Número de la cuenta</label>
+      <input
+        id="name"
+        type="text"
+        pInputText
+        formControlName="numeroCuenta"
+        [attr.disabled]="true"
+        />
+  </span>
+  <span class="float-label">
+      <label for="saldo">Saldo inicial</label>
+      <p-inputNumber
+       id="saldo"
+       formControlName="saldo"
+       [showButtons]="true"
+       [min]="0"
+       prefix="$"
+       ></p-inputNumber>
+  </span>
+  <button
+    pButton
+    type="submit"
+    label="Registrar cuenta de ahorro"
+    (click)="register()"
+    class="mt-2"
+    ></button>
+</form>

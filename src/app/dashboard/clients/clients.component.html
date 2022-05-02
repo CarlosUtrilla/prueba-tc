@@ -1,1 +1,30 @@
-<p>clients works!</p>
+<div>
+  <p-dialog position="left" header="Registrar nuevo cliente" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+    <app-form-cliet (closeModal)="switchModal($event)"></app-form-cliet>
+  </p-dialog>
+  <p-orderList
+    [value]="clients"
+    filterBy="nombre,id"
+    filterPlaceholder="Buscar cliente por nombre o ID"
+    (onSelectionChange)="onClientSelected($event)">
+    <ng-template pTemplate="header">
+      <header class="header flex flex-column justify-content-center">
+        <img src="assets/img/logo.webp" alt="logo" class="h-4rem align-self-center">
+        <p-divider></p-divider>
+        <div class="flex align-items-center justify-content-between">
+          <h4 class="mt-1 mb-1">Lista de clientes</h4>
+          <p-button (onClick)="switchModal(true)" label="Añadir cliente" icon="pi pi-user-plus" iconPos="right" styleClass="p-button-sm"></p-button>
+        </div>
+      </header>
+    </ng-template>
+    <ng-template class="clients-container" let-client pTemplate="item">
+      <div class="client flex align-items-center mt-2 mb-2">
+        <p-avatar [label]="client.nombre[0]" class="mr-3" shape="circle" size="large"></p-avatar>
+        <div>
+          <h4 class="mt-0 mb-2">{{ client.nombre }}</h4>
+          <span>ID: {{ client.id }}</span>
+        </div>
+      </div>
+    </ng-template>
+  </p-orderList>
+</div>

@@ -1,0 +1,69 @@
+
+<form class="flex flex-column align-items-start" [formGroup]="newClientForm">
+  <span class="float-label">
+      <label for="name">Nombre completo</label>
+      <input
+        id="name"
+        type="text"
+        pInputText
+        formControlName="nombre" />
+      <small
+        *ngIf="getError('nombre')"
+        id="username2-help"
+        class="p-error block"
+        >El nombre es obligatirio</small
+      >
+  </span>
+   <span class="float-label">
+      <label for="Direccion">Dirección</label>
+      <input
+        id="Direccion"
+        type="text"
+        pInputText
+        formControlName="direccion" />
+      <small
+        *ngIf="getError('direccion')"
+        id="username2-help"
+        class="p-error block"
+        >La dirección es obligatoria</small
+      >
+  </span>
+  <span class="float-label">
+      <label for="Edad">Edad</label>
+      <p-inputNumber
+       id="Edad"
+       formControlName="edad"
+       [showButtons]="true"
+       [min]="18"
+       ></p-inputNumber>
+      <small
+        *ngIf="getError('edad')"
+        id="username2-help"
+        class="p-error block"
+        >Indique la edad</small
+      >
+  </span>
+  <span class="float-label">
+      <label for="genero">Genero</label>
+      <p-selectButton
+        id="genero"
+        [options]="generos"
+        formControlName="genero"
+        optionLabel="label"
+        optionValue="value">
+      </p-selectButton>
+      <small
+        *ngIf="getError('genero')"
+        id="username2-help"
+        class="p-error block"
+        >Elija el genero</small
+      >
+  </span>
+  <button
+    pButton
+    type="submit"
+    label="Registrar cliente"
+    (click)="register()"
+    ></button>
+
+</form>

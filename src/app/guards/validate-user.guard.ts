@@ -4,11 +4,11 @@ import { Observable, tap } from 'rxjs';
 import { AuthService } from '../auth/services/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ValidateUserGuard implements CanActivate, CanLoad {
-  constructor(private authService: AuthService, private router:Router) { }
-  canActivate(): Observable<boolean> | boolean  {
+  constructor(private authService: AuthService, private router: Router) {}
+  canActivate(): Observable<boolean> | boolean {
     return this.authService.validateUser().pipe(
       tap(isValid => {
         if (!isValid) {
@@ -17,7 +17,7 @@ export class ValidateUserGuard implements CanActivate, CanLoad {
       })
     );
   }
-  canLoad():  Observable<boolean> | boolean {
+  canLoad(): Observable<boolean> | boolean {
     return this.authService.validateUser().pipe(
       tap(isValid => {
         if (!isValid) {

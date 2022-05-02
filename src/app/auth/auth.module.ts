@@ -7,17 +7,13 @@ import { MainComponent } from './main/main.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 
-
 @NgModule({
-  declarations: [
-    LoginComponent,
-    MainComponent,
-  ],
+  declarations: [LoginComponent, MainComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
     ReactiveFormsModule,
-    PrimeNgModule
-  ]
+    PrimeNgModule,
+  ],
 })
-export class AuthModule { }
+export class AuthModule {}

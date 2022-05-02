@@ -1,0 +1,36 @@
+<p-dialog [header]="'Cuenta: ' + selectedAccount?.numeroCuenta || ''" [(visible)]="display" [modal]="true" [style]="{width: '50vw'}"[draggable]="false" [resizable]="false">
+  <app-transactions [accout]="selectedAccount"></app-transactions>
+</p-dialog>
+
+<p-dialog header="Crear cuenta de ahorro" [(visible)]="displayForm" [modal]="true" position="right" [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+  <app-form-new-accout (closeModal)="displayForm=false"></app-form-new-accout>
+</p-dialog>
+<p-orderList
+    [value]="selectedClient!.savingAccounts"
+    filterBy="numeroCuenta"
+    filterPlaceholder="Buscar cuenta por numero"
+    [listStyle]="{'max-height':'30rem', 'margin-bottom':'2rem'}"
+    >
+    <ng-template pTemplate="header">
+      <header class="header flex flex-column justify-content-center">
+        <div class="flex align-items-center justify-content-between">
+          <div class="title">
+            <h4 class="mt-1 mb-1">Lista de cuentas de ahorro</h4>
+            <span>(Doble click para retirar/depositar)</span>
+          </div>
+          <p-button (onClick)="displayForm = true" label="Añadir nueva cuenta" icon="pi pi-wallet" iconPos="right" styleClass="p-button-sm"></p-button>
+        </div>
+      </header>
+    </ng-template>
+    <ng-template class="clients-container" let-account pTemplate="item">
+      <div (dblclick)="openAccount(account)" class="client flex align-items-center justify-content-between mt-2 mb-2">
+        <div>
+          <h4 class="mt-0 mb-2">Cuenta: {{ account.numeroCuenta }}</h4>
+          <span>Estado: {{ account.estado }}</span>
+        </div>
+        <div>
+          <h3>${{account.saldo}}</h3>
+        </div>
+      </div>
+    </ng-template>
+</p-orderList>

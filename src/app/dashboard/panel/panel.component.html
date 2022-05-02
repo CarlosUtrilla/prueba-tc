@@ -1,0 +1,34 @@
+<div class="panel">
+  <div
+    *ngIf="!selectedClient"
+    class="flex justify-content-center align-items-center w-full h-screen"
+  >
+    <h2 class="title-select">Seleccione un cliente para continuar</h2>
+  </div>
+  <div *ngIf="selectedClient" class="client-info w-11 m-auto h-screen">
+   <div class="flex align-items-center ">
+      <p-avatar [label]="selectedClient?.client!.nombre[0]" class="mr-4" shape="circle" size="xlarge"></p-avatar>
+      <div>
+        <h2 class="mb-1">{{selectedClient.client.nombre}}</h2>
+        <h3 class="mt-0">ID:  {{selectedClient.client.id}}</h3>
+      </div>
+   </div>
+   <div class="quick-info pr-4 pl-4 flex justify-content-center mb-3">
+      <div class="info-card">
+        <i class="pi pi-wallet mb-2"></i>
+        <p>Cuentas de ahorro del cliente</p>
+        <h2>{{selectedClient.savingAccounts.length}}</h2>
+        <p>Cuentas</p>
+      </div>
+      <div class="info-card">
+        <i class="pi pi-money-bill mb-2"></i>
+        <p>Total disponible en cuentas</p>
+        <h2>${{selectedClient.savingAccounts | calculeTotal}}</h2>
+        <p>Pesos</p>
+      </div>
+   </div>
+   <div class="mb-2">
+     <app-saving-accounts-list></app-saving-accounts-list>
+    </div>
+  </div>
+</div>

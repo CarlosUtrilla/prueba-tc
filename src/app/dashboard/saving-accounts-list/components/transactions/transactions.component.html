@@ -1,0 +1,38 @@
+<div>
+  <div class="flex flex-column justify-content-center align-items-center">
+    <h2 >Monto actual: ${{accout?.saldo}}</h2>
+    <h3 >Monto despues de la transacción: ${{getMountBeforeTransaction()}}</h3>
+  </div>
+  <form [formGroup]="transactionForm">
+    <span class="float-label">
+      <label for="options">Tipo transacción</label>
+      <p-selectButton
+        id="options"
+        [options]="options"
+        formControlName="tipo"
+        optionLabel="label"
+        optionValue="value"
+        (onOptionClick)="onOptionClick()"
+        >
+      </p-selectButton>
+    </span>
+    <span class="float-label">
+      <label for="monto">{{getLabel()}}</label>
+      <p-inputNumber
+       id="monto"
+       formControlName="monto"
+       [showButtons]="true"
+       [min]="0"
+       [max]='getMaxMount()'
+       prefix="$"
+       ></p-inputNumber>
+    </span>
+      <button
+        pButton
+        type="submit"
+        [label]="getLabel()"
+        (click)="transaction()"
+        class="mt-2"
+      ></button>
+  </form>
+</div>
