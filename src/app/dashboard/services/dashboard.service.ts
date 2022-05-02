@@ -34,7 +34,7 @@ export class DashboardService {
   private setClients() {
     const url = this.parseUrl('clientes');
 
-    return this.http.get(url).subscribe((res: any) => {
+    return lastValueFrom(this.http.get(url)).then((res: any) => {
       if (!res || res.error) {
         this.clients$.next([]);
       }
@@ -49,7 +49,7 @@ export class DashboardService {
   }
 
   setSelectedClient(client: Client) {
-    this.getSavingAccounts(client.id).subscribe(savingAccounts => {
+    this.getSavingAccounts(client.id).then(savingAccounts => {
       this.selectedClient$.next({ client, savingAccounts });
     });
   }
@@ -59,32 +59,36 @@ export class DashboardService {
 
   addClient(newClient: Client) {
     const url = this.parseUrl('clientes');
-    return this.http.post(url, newClient).pipe(
-      map((res: any) => {
-        let error = false;
-        if (!res || res.error) {
-          error = true;
-        }
-        !error && this.setClients();
-        return error;
-      })
+    return lastValueFrom(
+      this.http.post(url, newClient).pipe(
+        map((res: any) => {
+          let error = false;
+          if (!res || res.error) {
+            error = true;
+          }
+          !error && this.setClients();
+          return error;
+        })
+      )
     );
   }
 
   getSavingAccounts(id: string) {
     const url = this.parseUrl('cuentaAhorro');
 
-    return this.http.get(url).pipe(
-      map((res: any) => {
-        if (!res || res.error) {
-          return [];
-        }
-        return Object.entries<SavingAccountWithOutId>(res)
-          .map<SavingAccount>(([key, value]) => {
-            return { ...value, id: key };
-          })
-          .filter(s => s.idCliente === id);
-      })
+    return lastValueFrom(
+      this.http.get(url).pipe(
+        map((res: any) => {
+          if (!res || res.error) {
+            return [];
+          }
+          return Object.entries<SavingAccountWithOutId>(res)
+            .map<SavingAccount>(([key, value]) => {
+              return { ...value, id: key };
+            })
+            .filter(s => s.idCliente === id);
+        })
+      )
     );
   }
 
@@ -118,7 +122,6 @@ export class DashboardService {
         saldo: account.saldo,
       },
     };
-    console.log(updatedAccount);
     return lastValueFrom(
       this.http.patch(url, updatedAccount).pipe(
         map((res: any) => {

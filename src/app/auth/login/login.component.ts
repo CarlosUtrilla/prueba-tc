@@ -24,12 +24,16 @@ export class LoginComponent {
     private authService: AuthService,
     private fb: FormBuilder,
     private router: Router
-  ) {}
+  ) {
+    if (this.authService.usuario) {
+      this.router.navigateByUrl('/dashboard');
+    }
+  }
 
   login() {
     const { email, password } = this.loginForm.value;
     if (this.loginForm.valid) {
-      this.authService.login(email, password).subscribe(res => {
+      this.authService.login(email, password).then(res => {
         if (res.error) {
           this.error =
             res.error.message === 'EMAIL_NOT_FOUND'

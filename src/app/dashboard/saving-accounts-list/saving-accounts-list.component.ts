@@ -19,6 +19,10 @@ export class SavingAccountsListComponent {
     });
   }
 
+  openModal(account: SavingAccount) {
+    this.display = true;
+    this.selectedAccount = account;
+  }
   openTable(account: SavingAccount) {
     this.selectedAccount = account;
     this.displayTable = true;

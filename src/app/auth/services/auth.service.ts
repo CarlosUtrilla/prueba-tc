@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoginToken, User } from '../interfaces/interfaces';
-import { catchError, map, of, tap } from 'rxjs';
+import { catchError, map, of, tap, lastValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private _user!: User;
+  private _user!: User | undefined;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     const user = sessionStorage.getItem('user');
     if (user) {
       let u = JSON.parse(user);
@@ -22,7 +23,7 @@ export class AuthService {
   }
 
   get usuario() {
-    if (this._user.expiresIn > new Date()) {
+    if (this._user && this._user.expiresIn > new Date()) {
       return { ...this._user };
     } else {
       sessionStorage.removeItem('user');
@@ -37,25 +38,32 @@ export class AuthService {
       password,
       returnSecureToken: true,
     };
-    return this.http.post<LoginToken>(url, body).pipe(
-      tap(resp => {
-        if (resp.idToken) {
-          let t = new Date();
-          t.setSeconds(t.getSeconds() + Number.parseInt(resp.expiresIn));
-          console.log(t);
-          const user = {
-            email: resp.email,
-            uid: resp.localId,
-            token: resp.idToken,
-            expiresIn: t,
-          };
-          this._user = user;
-          sessionStorage.setItem('user', JSON.stringify(user));
-        }
-      }),
-      map(resp => resp),
-      catchError(err => of({ ...err.error }))
+    return lastValueFrom(
+      this.http.post<LoginToken>(url, body).pipe(
+        tap(resp => {
+          if (resp.idToken) {
+            let t = new Date();
+            t.setSeconds(t.getSeconds() + Number.parseInt(resp.expiresIn));
+            console.log(t);
+            const user = {
+              email: resp.email,
+              uid: resp.localId,
+              token: resp.idToken,
+              expiresIn: t,
+            };
+            this._user = user;
+            sessionStorage.setItem('user', JSON.stringify(user));
+          }
+        }),
+        map(resp => resp),
+        catchError(err => of({ ...err.error }))
+      )
     );
+  }
+  logout() {
+    this._user = undefined;
+    sessionStorage.removeItem('user');
+    this.router.navigate(['/login']);
   }
   validateUser() {
     return of(this.usuario?.token && this.usuario?.uid ? true : false);

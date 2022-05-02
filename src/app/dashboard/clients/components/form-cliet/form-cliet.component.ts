@@ -43,7 +43,7 @@ export class FormClietComponent {
         edad,
         genero,
       };
-      this.dashboardService.addClient(newClient).subscribe(err => {
+      this.dashboardService.addClient(newClient).then(err => {
         if (!err) {
           this.closeModal.emit(false);
         }

@@ -27,7 +27,7 @@
       </header>
     </ng-template>
     <ng-template class="clients-container" let-account pTemplate="item">
-      <div (dblclick)="display=true" class="client flex align-items-center justify-content-between mt-2 mb-2">
+      <div (dblclick)="openModal(account)" class="client flex align-items-center justify-content-between mt-2 mb-2">
         <div>
           <h4 class="mt-0 mb-2">Cuenta: {{ account.numeroCuenta }}</h4>
           <span>Estado: {{ account.estado }}</span>
