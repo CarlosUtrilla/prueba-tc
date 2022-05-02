@@ -1,9 +1,13 @@
 <p-dialog [header]="'Cuenta: ' + selectedAccount?.numeroCuenta || ''" [(visible)]="display" [modal]="true" [style]="{width: '50vw'}"[draggable]="false" [resizable]="false">
-  <app-transactions [accout]="selectedAccount"></app-transactions>
+  <app-transactions [accout]="selectedAccount" (closeModal)="display=false"></app-transactions>
 </p-dialog>
 
 <p-dialog header="Crear cuenta de ahorro" [(visible)]="displayForm" [modal]="true" position="right" [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
   <app-form-new-accout (closeModal)="displayForm=false"></app-form-new-accout>
+</p-dialog>
+
+<p-dialog [(visible)]="displayTable" [modal]="true"  [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+  <app-table-transactions [account]="selectedAccount"></app-table-transactions>
 </p-dialog>
 <p-orderList
     [value]="selectedClient!.savingAccounts"
@@ -23,13 +27,14 @@
       </header>
     </ng-template>
     <ng-template class="clients-container" let-account pTemplate="item">
-      <div (dblclick)="openAccount(account)" class="client flex align-items-center justify-content-between mt-2 mb-2">
+      <div (dblclick)="display=true" class="client flex align-items-center justify-content-between mt-2 mb-2">
         <div>
           <h4 class="mt-0 mb-2">Cuenta: {{ account.numeroCuenta }}</h4>
           <span>Estado: {{ account.estado }}</span>
         </div>
         <div>
           <h3>${{account.saldo}}</h3>
+          <button (click)="openTable(account)" pButton type="button" label="Historial" icon="pi pi-book" class="p-button-sm p-button-secondary"></button>
         </div>
       </div>
     </ng-template>

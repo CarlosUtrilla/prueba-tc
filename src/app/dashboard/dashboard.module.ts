@@ -12,6 +12,7 @@ import { FormClietComponent } from './clients/components/form-cliet/form-cliet.c
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormNewAccoutComponent } from './saving-accounts-list/components/form-new-accout/form-new-accout.component';
 import { TransactionsComponent } from './saving-accounts-list/components/transactions/transactions.component';
+import { TableTransactionsComponent } from './saving-accounts-list/components/table-transactions/table-transactions.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { TransactionsComponent } from './saving-accounts-list/components/transac
     FormClietComponent,
     FormNewAccoutComponent,
     TransactionsComponent,
+    TableTransactionsComponent,
   ],
   imports: [
     CommonModule,

@@ -13,7 +13,6 @@ export class ClientsComponent {
   displayModal: boolean = false;
   constructor(private dashboardService: DashboardService) {
     this.dashboardService.getClients().subscribe(res => {
-      console.log('clients', res);
       this.clients = res;
     });
   }

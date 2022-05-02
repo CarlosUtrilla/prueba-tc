@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, lastValueFrom, map } from 'rxjs';
 import {
   Client,
   SelectedClient,
@@ -9,6 +9,7 @@ import {
   SavingAccountWithOutId,
 } from '../interfaces/interfaces';
 import { AuthService } from '../../auth/services/auth.service';
+import { Transaction } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -41,7 +42,6 @@ export class DashboardService {
     });
   }
   getClients() {
-    console.log('getting clients');
     if (this.clients$.getValue().length === 0) {
       this.setClients();
     }
@@ -104,6 +104,82 @@ export class DashboardService {
         }
         return error;
       })
+    );
+  }
+
+  updateAccount(account: SavingAccount) {
+    const url = this.parseUrl('cuentaAhorro');
+    const updatedAccount = {
+      [account.id]: {
+        estado: account.estado,
+        fechaUltimaAct: new Date(),
+        idCliente: account.idCliente,
+        numeroCuenta: account.numeroCuenta,
+        saldo: account.saldo,
+      },
+    };
+    console.log(updatedAccount);
+    return lastValueFrom(
+      this.http.patch(url, updatedAccount).pipe(
+        map((res: any) => {
+          let error = false;
+          if (!res || res.error) {
+            error = true;
+          }
+          return error;
+        })
+      )
+    );
+  }
+  createTransaction(
+    transaction: Transaction,
+    selectedAccout: SavingAccount,
+    selectedCliet: SelectedClient
+  ): Promise<boolean> {
+    selectedAccout.saldo =
+      transaction.tipo === 'deposit'
+        ? selectedAccout.saldo + transaction.monto
+        : selectedAccout.saldo - transaction.monto;
+
+    return this.updateAccount(selectedAccout).then(err => {
+      if (!err) {
+        const url = this.parseUrl('transacciones');
+        return lastValueFrom(
+          this.http.post(url, transaction).pipe(
+            map((res: any) => {
+              let error = false;
+              if (!res || res.error) {
+                error = true;
+              }
+              if (!error) {
+                this.setSelectedClient(selectedCliet.client);
+              }
+              return error;
+            })
+          )
+        );
+      }
+      return lastValueFrom(new BehaviorSubject(false));
+    });
+  }
+  getTransactions(numCuenta: string) {
+    const url = this.parseUrl('transacciones');
+    return lastValueFrom(
+      this.http.get(url).pipe(
+        map((res: any) => {
+          if (!res || res.error) {
+            return [];
+          }
+          return Object.values<Transaction>(res)
+            .filter(t => t.numeroCuenta === numCuenta)
+            .map(t => ({
+              ...t,
+              fechaUltimaAct: new Date(t.fechaUltimaAct).toLocaleString(),
+              monto: t.tipo === 'deposit' ? t.monto : -t.monto,
+              tipo: t.tipo === 'deposit' ? 'Deposito' : 'Retiro',
+            }));
+        })
+      )
     );
   }
 }

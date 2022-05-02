@@ -11,6 +11,7 @@ export class SavingAccountsListComponent {
   selectedClient: SelectedClient | undefined;
   display: boolean = false;
   displayForm: boolean = false;
+  displayTable: boolean = false;
   selectedAccount: SavingAccount | undefined;
   constructor(private dashboardService: DashboardService) {
     this.dashboardService.getSelectedClient().subscribe(client => {
@@ -18,9 +19,8 @@ export class SavingAccountsListComponent {
     });
   }
 
-  openAccount(account: SavingAccount) {
-    console.log(account);
+  openTable(account: SavingAccount) {
     this.selectedAccount = account;
-    this.display = true;
+    this.displayTable = true;
   }
 }

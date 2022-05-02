@@ -19,3 +19,14 @@ export interface SelectedClient {
   client: Client;
   savingAccounts: SavingAccount[];
 }
+
+export interface Transaction {
+  fechaUltimaAct: Date | string;
+  monto: number;
+  numeroCuenta: string;
+  terminal: string;
+  tipo: TransactionType | string;
+  usuario: string;
+}
+
+export type TransactionType = 'deposit' | 'withdraw';

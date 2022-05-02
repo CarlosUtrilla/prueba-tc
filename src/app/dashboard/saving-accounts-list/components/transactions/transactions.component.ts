@@ -1,5 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { SavingAccount, SelectedClient } from '../../../interfaces/interfaces';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  SavingAccount,
+  SelectedClient,
+  Transaction,
+} from '../../../interfaces/interfaces';
 import { FormBuilder, Validators } from '@angular/forms';
 import { DashboardService } from '../../../services/dashboard.service';
 
@@ -10,6 +14,7 @@ import { DashboardService } from '../../../services/dashboard.service';
 })
 export class TransactionsComponent {
   @Input() accout: SavingAccount | undefined;
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter();
   options = [
     { label: 'Deposito', value: 'deposit' },
     { label: 'Retiro', value: 'withdraw' },
@@ -18,11 +23,9 @@ export class TransactionsComponent {
   transactionForm = this.fb.group({
     tipo: ['deposit'],
     monto: [0, [Validators.required, Validators.min(0)]],
-    numeroCuenta: [0, [Validators.required]],
-    terminal: ['TERM235'],
   });
 
-  constructor(private fb: FormBuilder, dbService: DashboardService) {
+  constructor(private fb: FormBuilder, private dbService: DashboardService) {
     dbService.getSelectedClient().subscribe(selectedClient => {
       this.selectedClient = selectedClient;
     });
@@ -58,6 +61,29 @@ export class TransactionsComponent {
       : 'Retirar';
   }
   transaction() {
-    console.log(this.transactionForm.value);
+    const { tipo, monto, terminal } = this.transactionForm.value;
+    if (monto > 0) {
+      const transaction: Transaction = {
+        tipo,
+        monto,
+        terminal,
+        numeroCuenta: this.accout!.numeroCuenta,
+        fechaUltimaAct: new Date(),
+        usuario: this.selectedClient!.client.id,
+      };
+      this.dbService
+        .createTransaction(transaction, this.accout!, this.selectedClient!)
+        .then(err => {
+          if (!err) {
+            this.closeModal.emit(false);
+            this.transactionForm.setValue({
+              monto: 0,
+              tipo: 'deposit',
+            });
+          }
+        });
+    } else {
+      this.closeModal.emit(false);
+    }
   }
 }
