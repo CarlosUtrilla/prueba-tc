@@ -1,4 +1,7 @@
 <div class="panel">
+   <div class="lg:hidden md:inline-flex col-12 shadow-1">
+     <button (click)="openSidebar.emit(true)" pButton pRipple type="button" icon="pi pi-bars" class="p-button-rounded p-button-text"></button>
+  </div>
   <div
     *ngIf="!selectedClient"
     class="flex justify-content-center align-items-center w-full h-screen"
@@ -13,7 +16,7 @@
         <h3 class="mt-0">ID:  {{selectedClient.client.id}}</h3>
       </div>
    </div>
-   <div class="quick-info pr-4 pl-4 flex justify-content-center mb-3">
+   <div class="quick-info pr-4 pl-4 flex justify-content-center flex-wrap mb-3">
       <div class="info-card">
         <i class="pi pi-wallet mb-2"></i>
         <p>Cuentas de ahorro del cliente</p>

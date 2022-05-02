@@ -1,12 +1,12 @@
-<p-dialog [header]="'Cuenta: ' + selectedAccount?.numeroCuenta || ''" [(visible)]="display" [modal]="true" [style]="{width: '50vw'}"[draggable]="false" [resizable]="false">
+<p-dialog [header]="'Cuenta: ' + selectedAccount?.numeroCuenta || ''" [(visible)]="display" [modal]="true"[draggable]="false" [resizable]="false">
   <app-transactions [accout]="selectedAccount" (closeModal)="display=false"></app-transactions>
 </p-dialog>
 
-<p-dialog header="Crear cuenta de ahorro" [(visible)]="displayForm" [modal]="true" position="right" [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+<p-dialog header="Crear cuenta de ahorro" [(visible)]="displayForm" [modal]="true" position="right"  [draggable]="false" [resizable]="false">
   <app-form-new-accout (closeModal)="displayForm=false"></app-form-new-accout>
 </p-dialog>
 
-<p-dialog [(visible)]="displayTable" [modal]="true"  [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+<p-dialog header="Transacciones" [(visible)]="displayTable" [modal]="true"  [draggable]="false" [resizable]="false">
   <app-table-transactions [account]="selectedAccount"></app-table-transactions>
 </p-dialog>
 <p-orderList

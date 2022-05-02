@@ -1,10 +1,13 @@
 <div>
   <div class="grid">
-    <div class="col-3 p-0">
-      <app-clients></app-clients>
+    <div class="hidden lg:col-3 lg:inline-flex p-0">
+      <app-clients class="w-full"></app-clients>
     </div>
-    <div class="col-9 p-0">
-      <app-panel></app-panel>
+    <div class="col-12 lg:col-9 md:col-12 p-0">
+      <app-panel (openSidebar)="displaySidebar = $event"></app-panel>
     </div>
   </div>
+  <p-sidebar [(visible)]="displaySidebar" styleClass="p-sidebar-lg">
+    <app-clients (closeModal)="displaySidebar = $event" class="w-full"></app-clients>
+  </p-sidebar>
 </div>

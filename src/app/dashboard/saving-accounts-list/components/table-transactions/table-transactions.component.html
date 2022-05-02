@@ -1,4 +1,4 @@
-<p-table tableStyleClass="table" [columns]="cols" [value]="transactions">
+<p-table tableStyleClass="table" [columns]="cols" [value]="transactions"  [scrollable]="true" scrollHeight="500px">
     <ng-template pTemplate="caption">
         Historial de transacciones de la cuenta {{account?.numeroCuenta}}
     </ng-template>
